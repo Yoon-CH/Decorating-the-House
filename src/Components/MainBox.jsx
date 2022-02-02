@@ -35,13 +35,19 @@ function MainBox() {
       <ImageBox>
         <Img key={users.id} src={users.imageUrl} alt="집꾸미기" />
         {users.productList.map(user => (
-          <Icon
-            key={user.productId}
-            src=" //cdn.ggumim.co.kr/storage/20211029145238AlZrQ41xtg.png"
-            alt="집꾸미기 돋보기"
-            top={user.pointX}
-            left={user.pointY}
-          />
+          <>
+            <Icon
+              key={user.productId}
+              src=" //cdn.ggumim.co.kr/storage/20211029145238AlZrQ41xtg.png"
+              alt="집꾸미기 돋보기"
+              top={user.pointX}
+              left={user.pointY}
+            />
+            <CloseIcon
+              key={user.productId}
+              src="//cdn.ggumim.co.kr/storage/20211029145330GwwumnWNSs.png"
+            />
+          </>
         ))}
       </ImageBox>
       <ProductListBox>
@@ -70,7 +76,7 @@ export default MainBox;
 const Div = styled.div`
   position: absolute;
   text-align: center;
-  background-image: url(//cdn.ggumim.co.kr/storage/20211117191419RW6JS6bjRm.png);
+  background-image: url(https:cdn.ggumim.co.kr/storage/20211117191419RW6JS6bjRm.png);
   width: 24px;
   height: 28px;
   background-position: center center;
@@ -102,6 +108,12 @@ const ProductListBox = styled.div`
   justify-content: center;
 `;
 
+const CloseIcon = styled.img`
+  position: absolute;
+  width: 32px;
+  height: 32px;
+`;
+
 const Icon = styled.img`
   position: absolute;
   width: 32px;
@@ -109,12 +121,12 @@ const Icon = styled.img`
 `;
 
 const Img = styled.img`
-  position: relative;
   width: 45%;
 `;
 
 const ImageBox = styled.div`
   display: contents;
+  position: relative;
 `;
 
 const Message = styled.div`
