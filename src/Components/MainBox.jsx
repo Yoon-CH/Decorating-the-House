@@ -52,6 +52,12 @@ function MainBox() {
               src={user.imageUrl}
               alt="집꾸미기 제품"
             />
+            {user.discountRate > 0 && (
+              <Div>
+                {user.discountRate}
+                <span>%</span>
+              </Div>
+            )}
           </ProductDiv>
         ))}
       </ProductListBox>
@@ -61,6 +67,24 @@ function MainBox() {
 
 export default MainBox;
 
+const Div = styled.div`
+  position: absolute;
+  text-align: center;
+  background-image: url(//cdn.ggumim.co.kr/storage/20211117191419RW6JS6bjRm.png);
+  width: 24px;
+  height: 28px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 25px;
+  color: white;
+  right: 6px;
+  top: 1px;
+  padding-left: 1px;
+`;
+
 const ProductBox = styled.img`
   width: 80px;
   height: 80px;
@@ -69,7 +93,8 @@ const ProductBox = styled.img`
 `;
 
 const ProductDiv = styled.div`
-  margin: 28px 6px;
+  position: relative;
+  margin: 20px 6px;
 `;
 
 const ProductListBox = styled.div`
