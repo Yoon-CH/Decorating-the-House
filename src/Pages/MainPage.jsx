@@ -1,31 +1,22 @@
 import React from 'react';
-import ProductList from '../Components/ProductList';
-import MainImage from '../Components/MainImage';
+import MainBox from '../Components/MainBox';
 import styled from 'styled-components';
 
 export const MainPage = () => {
   return (
     <MainSection>
-      <ImageSection>
-        <MainImage />
-      </ImageSection>
-      <ListSection>
-        <ProductList />
-      </ListSection>
+      <ProductSection>
+        <MainBox />
+      </ProductSection>
     </MainSection>
   );
 };
 
-const ListSection = styled.article`
+const ProductSection = styled.article`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const ImageSection = styled.article`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
 `;
 
 const MainSection = styled.section`
