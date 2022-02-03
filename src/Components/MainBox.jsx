@@ -172,7 +172,7 @@ const ProductDetail = styled.div`
 const DisCountBox = styled.div`
   position: absolute;
   text-align: center;
-  background-image: url(https:cdn.ggumim.co.kr/storage/20211117191419RW6JS6bjRm.png);
+  background-image: url('https:cdn.ggumim.co.kr/storage/20211117191419RW6JS6bjRm.png');
   width: 24px;
   height: 28px;
   background-position: center center;
@@ -182,7 +182,7 @@ const DisCountBox = styled.div`
   font-weight: bold;
   line-height: 25px;
   color: white;
-  right: 6px;
+  right: 5px;
   top: 1px;
   padding-left: 1px;
 `;
