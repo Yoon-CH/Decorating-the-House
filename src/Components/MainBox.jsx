@@ -58,7 +58,7 @@ function MainBox() {
               />
             )}
             {currentId === product.productId && (
-              <ProductDetail>
+              <ProductDetail onClick={() => alert('서비스 준비중입니다.')}>
                 <DetailImage src={product.imageUrl} />
                 <ProductSection>
                   {product.productName}
