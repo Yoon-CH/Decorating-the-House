@@ -6,6 +6,7 @@ function MainBox() {
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [currentId, setCurrentId] = useState(0);
 
   const fetchUsers = async () => {
     try {
@@ -32,37 +33,75 @@ function MainBox() {
 
   return (
     <>
-      <ImageBox>
+      <ImageBox onClick={() => setCurrentId(0)}>
         <Img key={users.id} src={users.imageUrl} alt="집꾸미기" />
-        {users.productList.map(user => (
-          <>
-            <Icon
-              key={user.productId}
-              src=" //cdn.ggumim.co.kr/storage/20211029145238AlZrQ41xtg.png"
-              alt="집꾸미기 돋보기"
-              top={user.pointX}
-              left={user.pointY}
-            />
-            <CloseIcon
-              key={user.productId}
-              src="//cdn.ggumim.co.kr/storage/20211029145330GwwumnWNSs.png"
-            />
-          </>
+        {users.productList.map(product => (
+          <ProductImageBox
+            key={product.productId}
+            top={product.pointX}
+            left={product.pointY}
+          >
+            {currentId === product.productId ? (
+              <CloseIcon
+                src="//cdn.ggumim.co.kr/storage/20211029145330GwwumnWNSs.png"
+                alt="집꾸미기 취소"
+                onClick={() => setCurrentId(0)}
+              />
+            ) : (
+              <Icon
+                src=" //cdn.ggumim.co.kr/storage/20211029145238AlZrQ41xtg.png"
+                alt="집꾸미기 돋보기"
+                onClick={event => {
+                  event.stopPropagation();
+                  setCurrentId(product.productId);
+                }}
+              />
+            )}
+            {currentId === product.productId && (
+              <ProductDetail>
+                <DetailImage src={product.imageUrl} />
+                <ProductSection>
+                  {product.productName}
+                  <ProductPrice>
+                    {product.discountRate > 0 ? (
+                      <DisCountRate>
+                        {product.discountRate}
+                        <span>%</span>
+                      </DisCountRate>
+                    ) : (
+                      <Expectation>예상가</Expectation>
+                    )}
+                    {product.priceDiscount
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  </ProductPrice>
+                </ProductSection>
+              </ProductDetail>
+            )}
+          </ProductImageBox>
         ))}
       </ImageBox>
       <ProductListBox>
-        {users.productList.map(user => (
-          <ProductDiv key={user.productId}>
+        {users.productList.map(product => (
+          <ProductDiv key={product.productId}>
             <ProductBox
-              key={user.productId}
-              src={user.imageUrl}
+              src={product.imageUrl}
               alt="집꾸미기 제품"
+              productId={product.productId}
+              currentId={currentId}
+              onClick={() => {
+                if (currentId === product.productId) {
+                  setCurrentId(0);
+                } else {
+                  setCurrentId(product.productId);
+                }
+              }}
             />
-            {user.discountRate > 0 && (
-              <Div>
-                {user.discountRate}
+            {product.discountRate > 0 && (
+              <DisCountBox>
+                {product.discountRate}
                 <span>%</span>
-              </Div>
+              </DisCountBox>
             )}
           </ProductDiv>
         ))}
@@ -73,7 +112,64 @@ function MainBox() {
 
 export default MainBox;
 
-const Div = styled.div`
+const Expectation = styled.div`
+  margin-right: 4px;
+  line-height: 11px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #898f94;
+`;
+
+const DisCountRate = styled.div`
+  margin-right: 4px;
+  line-height: 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ff585d;
+`;
+
+const ProductSection = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ProductPrice = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  line-height: 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #181d1f;
+`;
+
+const DetailImage = styled.img`
+  flex-shrink: 0;
+  width: 70px;
+  height: 70px;
+  margin-right: 8px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 4px;
+`;
+
+const ProductDetail = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  padding: 5px;
+  width: 220px;
+  height: 86px;
+  z-index: 9999;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 7px;
+  -webkit-box-shadow: 3px 3px 8px 0 rgb(0 0 0 / 20%);
+  box-shadow: 3px 3px 8px 0 rgb(0 0 0 / 20%);
+  font-size: 14px;
+  cursor: pointer;
+`;
+
+const DisCountBox = styled.div`
   position: absolute;
   text-align: center;
   background-image: url(https:cdn.ggumim.co.kr/storage/20211117191419RW6JS6bjRm.png);
@@ -91,16 +187,26 @@ const Div = styled.div`
   padding-left: 1px;
 `;
 
+const ProductImageBox = styled.div`
+  position: absolute;
+  top: ${props => props.top}px;
+  left: ${props => props.left}px;
+`;
+
 const ProductBox = styled.img`
   width: 80px;
   height: 80px;
   border-radius: 16px;
-  border: 0.5px solid #aaafb9;
+  border: ${props =>
+    props.currentId === props.productId
+      ? '1px solid red'
+      : '0.5px solid #aaafb9'};
 `;
 
 const ProductDiv = styled.div`
   position: relative;
   margin: 20px 6px;
+  cursor: pointer;
 `;
 
 const ProductListBox = styled.div`
@@ -109,24 +215,28 @@ const ProductListBox = styled.div`
 `;
 
 const CloseIcon = styled.img`
-  position: absolute;
   width: 32px;
   height: 32px;
+  z-index: 999;
+  cursor: pointer;
 `;
 
 const Icon = styled.img`
-  position: absolute;
   width: 32px;
   height: 32px;
+  z-index: 999;
+  cursor: pointer;
 `;
 
 const Img = styled.img`
-  width: 45%;
+  width: 100%;
+  cursor: pointer;
 `;
 
 const ImageBox = styled.div`
-  display: contents;
+  display: inline-block;
   position: relative;
+  width: 45%;
 `;
 
 const Message = styled.div`
