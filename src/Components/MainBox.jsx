@@ -189,8 +189,8 @@ const DisCountBox = styled.div`
 
 const ProductImageBox = styled.div`
   position: absolute;
-  top: ${props => props.top}px;
-  left: ${props => props.left}px;
+  top: ${props => props.top * 1.2}px;
+  left: ${props => props.left * 1.3}px;
 `;
 
 const ProductBox = styled.img`
